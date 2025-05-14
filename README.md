@@ -1,7 +1,7 @@
 # Proyecto Base de dotos
 
 
-tienda online de compra y venta de cartas entre usuarios
+Tienda online de compra y venta de cartas entre usuarios
 
 Cliente : 
     Soy el fundador de CardTraders, una plataforma digital que conecta a coleccionistas y jugadores de cartas coleccionables (TCG) permitiéndoles comprar, vender e intercambiar cartas de manera segura. Nuestra plataforma actúa como intermediario confiable, verificando la autenticidad de las cartas y garantizando transacciones seguras entre usuarios.
