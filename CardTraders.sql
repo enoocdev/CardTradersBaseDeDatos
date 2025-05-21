@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS mensajes(
     id_usuario_receptor INT,
     contenido TEXT,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FOREIGN KEY (id_usuario_enviador) REFERENCES usuarios(id),
-    CONSTRAINT FOREIGN KEY (id_usuario_receptor) REFERENCES usuarios(id)
+    CONSTRAINT FOREIGN KEY (id_usuario_enviador) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_usuario_receptor) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS direcciones(
     ciudad VARCHAR(50),
     calle VARCHAR(50),
     piso VARCHAR(50),
-    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS juegos(
@@ -47,14 +47,15 @@ CREATE TABLE IF NOT EXISTS ediciones(
     nombre_edicion VARCHAR(100),
     fecha_lanzamiento DATE,
     codigo_edicion VARCHAR(50),
-    CONSTRAINT FOREIGN KEY (id_juego) REFERENCES juegos(id)
+    CONSTRAINT FOREIGN KEY (id_juego) REFERENCES juegos(id) ON UPDATE CASCADE ON DELETE RESTRICT
 
 );
 
 CREATE TABLE IF NOT EXISTS cartas(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
-    imagen VARCHAR(100)
+    imagen VARCHAR(100),
+    precio_medio DECIMAL(30,2) DEFAULT 0
 );
 
 
@@ -64,8 +65,8 @@ CREATE TABLE IF NOT EXISTS cartas_ediciones(
     id_carta BIGINT,
     id_edicion INT,
     rareza VARCHAR(100),
-    CONSTRAINT FOREIGN KEY (id_carta) REFERENCES cartas(id),
-    CONSTRAINT FOREIGN KEY (id_edicion) REFERENCES ediciones(id)
+    CONSTRAINT FOREIGN KEY (id_carta) REFERENCES cartas(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_edicion) REFERENCES ediciones(id) ON UPDATE CASCADE ON DELETE RESTRICT
 
 );
 
@@ -90,12 +91,12 @@ CREATE TABLE IF NOT EXISTS inventarios(
     id_estado_en_inventario INT,
     foil BOOLEAN,
     comentario TEXT,
-    precio DECIMAL(10,2),
+    precio DECIMAL(30,2),
     imagen VARCHAR(50),
-    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
-    CONSTRAINT FOREIGN KEY (id_carta) REFERENCES cartas(id),
-    CONSTRAINT FOREIGN KEY (id_estado_carta) REFERENCES estados_cartas(id),
-    CONSTRAINT FOREIGN KEY (id_estado_en_inventario) REFERENCES estado_inventarios(id)
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_carta) REFERENCES cartas(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_estado_carta) REFERENCES estados_cartas(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_estado_en_inventario) REFERENCES estado_inventarios(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 
@@ -120,9 +121,9 @@ CREATE TABLE IF NOT EXISTS pedidos(
     id_estado_envio INT,
     comentario TEXT,
     valoracion INT,
-    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
-    CONSTRAINT FOREIGN KEY (id_tipo_envio) REFERENCES tipos_envios(id),
-    CONSTRAINT FOREIGN KEY (id_estado_envio) REFERENCES estado_envios(id)
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_tipo_envio) REFERENCES tipos_envios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT FOREIGN KEY (id_estado_envio) REFERENCES estado_envios(id) ON UPDATE CASCADE ON DELETE RESTRICT
 
 );
 
@@ -130,8 +131,29 @@ CREATE TABLE IF NOT EXISTS pedidos(
 CREATE TABLE IF NOT EXISTS pedidos_inventarios(
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_pedido INT,
-    id_cartas_inventario INT,
+    id_inventario INT,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FOREIGN KEY (id_pedido) REFERENCES pedidos(id),
-    CONSTRAINT FOREIGN KEY (id_cartas_inventario) REFERENCES inventarios(id)
+    CONSTRAINT FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (id_cartas_inventario) REFERENCES inventarios(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+
+
+DELIMITER //
+CREATE TRIGGER 
+calcularMedia
+BEFORE INSERT ON pedidos_inventarios
+FOR EACH ROW
+BEGIN
+
+
+    DECLARE carta BIGINT DEFAULT (SELECT id_carta FROM inventarios WHERE id = new.id_inventario);
+    DECLARE precioVenta DECIMAL(30,2) DEFAULT (SELECT precio FROM inventarios WHERE id = new.id_inventario);
+    DECLARE cartas_de_vendidas BIGINT DEFAULT (SELECT count(id) FROM pedidos_inventarios WHERE (SELECT id_carta FROM inventarios WHERE id = new.id_inventario) = carta);
+    
+    UPDATE cartas SET precio_medio = ((precio_medio * cartas_de_vendidas) + precioVenta)/ MAX(cartas_de_vendidas,1) WHERE cartas.id = carta;
+
+END //
+DELIMITER ;
+
