@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS usuarios(
     email VARCHAR(100) UNIQUE,
     telefono VARCHAR(50) UNIQUE,
     dni VARCHAR(50) UNIQUE,
-    vendedor BOOLEAN DEFAULT FALSE
+    vendedor BOOLEAN DEFAULT FALSE,
+    valoracionMedia INT DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS mensajes(
@@ -89,9 +90,9 @@ CREATE TABLE IF NOT EXISTS inventarios(
     id_carta BIGINT,
     id_estado_carta INT,
     id_estado_en_inventario INT,
-    foil BOOLEAN,
+    foil BOOLEAN NOT NULL,
     comentario TEXT,
-    precio DECIMAL(30,2),
+    precio DECIMAL(30,2) CHECK (precio > 0),
     imagen VARCHAR(50),
     CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT FOREIGN KEY (id_carta) REFERENCES cartas(id) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -120,7 +121,7 @@ CREATE TABLE IF NOT EXISTS pedidos(
     id_tipo_envio INT,
     id_estado_envio INT,
     comentario TEXT,
-    valoracion INT,
+    valoracion INT CHECK(valoracion > 0 AND valoracion <= 5),
     CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT FOREIGN KEY (id_tipo_envio) REFERENCES tipos_envios(id) ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT FOREIGN KEY (id_estado_envio) REFERENCES estado_envios(id) ON UPDATE CASCADE ON DELETE RESTRICT
@@ -155,5 +156,31 @@ BEGIN
     UPDATE cartas SET precio_medio = ((precio_medio * cartas_de_vendidas) + precioVenta)/ MAX(cartas_de_vendidas,1) WHERE cartas.id = carta;
 
 END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE TRIGGER evitarMensajesPropios
+BEFORE INSERT ON mensajes
+FOR EACH ROW
+BEGIN
+  IF NEW.id_usuario_enviador = NEW.id_usuario_receptor THEN
+    SIGNAL SQLSTATE '45000' 
+    SET MESSAGE_TEXT = 'Un usuario no puede enviarse mensajes a si mismo.';
+  END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER actualizarValoracionUsuario
+BEFORE INSERT ON pedidos
+FOR EACH ROW
+BEGIN
+
+    UPDATE usuarios SET valoracion = ((SELECT sum(valoracion) FROM pedidos WHERE id_usuario = new.id_usuario)/(SELECT count(*) FROM pedidos WHERE id_usuario = new.id_usuario)) WHERE id = new.id_usuario;
+  
+END;
+//
 DELIMITER ;
 
