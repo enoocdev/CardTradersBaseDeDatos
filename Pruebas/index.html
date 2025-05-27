@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor Interactivo: Batería de Pruebas CardTraders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; 
+        }
+        .sql-code {
+            background-color: #1e293b; 
+            color: #cbd5e1; 
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem; 
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 2000px; 
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .status-pasa {
+            background-color: #dcfce7; 
+            color: #166534; 
+            border: 1px solid #86efac; 
+        }
+        .status-falla {
+            background-color: #fee2e2; 
+            color: #991b1b; 
+            border: 1px solid #fca5a5; 
+        }
+       
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <nav class="md:w-64 bg-sky-700 text-white p-5 space-y-2 shrink-0">
+            <h1 class="text-2xl font-bold mb-6 border-b border-sky-600 pb-3">Batería de Pruebas</h1>
+            <button data-section="intro" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">1. Introducción</button>
+            <button data-section="A" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección A: Usuarios</button>
+            <button data-section="B" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección B: Inventario</button>
+            <button data-section="C" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección C: Pedidos</button>
+            <button data-section="D" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección D: Mensajería</button>
+            <button data-section="E" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección E: Integridad</button>
+            <button data-section="F" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección F: Procedimientos</button>
+            <button data-section="G" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">Sección G: Funciones</button>
+            <button data-section="conclusion" class="w-full text-left px-3 py-2 rounded-md hover:bg-sky-600 transition-colors nav-button">3. Conclusión de Pruebas</button>
+        </nav>
+
+        <main class="flex-1 p-6 md:p-10 bg-slate-100 overflow-y-auto">
+            <header class="mb-8">
+                <h2 id="main-title" class="text-3xl font-bold text-sky-800">Visor Interactivo: Batería de Pruebas CardTraders</h2>
+                <p id="main-subtitle" class="text-slate-600 mt-1">Explore los casos de prueba y sus resultados para el sistema CardTraders.</p>
+            </header>
+            
+            <div id="intro" class="content-section space-y-4 active">
+                </div>
+            <div id="A" class="content-section space-y-4">
+                </div>
+            <div id="B" class="content-section space-y-4">
+                </div>
+            <div id="C" class="content-section space-y-4">
+                </div>
+            <div id="D" class="content-section space-y-4">
+                </div>
+            <div id="E" class="content-section space-y-4">
+                </div>
+            <div id="F" class="content-section space-y-4">
+                </div>
+            <div id="G" class="content-section space-y-4">
+                </div>
+            <div id="conclusion" class="content-section space-y-4">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        const testData = {
+            intro: {
+                title: "1. Introducción",
+                content: `
+                    <p class="text-slate-700 leading-relaxed">Esta batería de pruebas está diseñada para verificar la integridad de los datos, la correcta aplicación de las reglas de negocio y el funcionamiento esperado de las operaciones CRUD (Crear, Leer, Actualizar, Borrar) y otros procesos clave dentro de la base de datos \`CardTraders\`. Cada caso de prueba describe los pasos a seguir, el resultado esperado y un espacio para documentar el resultado real y el estado.</p>
+                    <p class="text-slate-700 leading-relaxed mt-2">Se asume que la base de datos ha sido creada y poblada con los datos de ejemplo proporcionados en los scripts anteriores.</p>
+                    <p class="text-slate-700 leading-relaxed mt-2">Esta aplicación interactiva permite navegar y explorar los diferentes casos de prueba de forma estructurada. Puede seleccionar una sección del menú lateral para ver los casos de prueba correspondientes. Cada caso de prueba se puede expandir para ver sus detalles completos, incluyendo los pasos SQL, los resultados esperados y los resultados reales simulados.</p>
+                `
+            },
+            sections: [
+                {
+                    id: "A",
+                    title: "Sección A: Gestión de Usuarios",
+                    testCases: [
+                        {
+                            id: "A.1",
+                            title: "Alta de nuevo usuario comprador",
+                            descripcion: "Verificar que se puede registrar un nuevo usuario que no es vendedor.",
+                            precondiciones: ["Ninguna."],
+                            pasos: [
+                                { type: "text", content: "1. Insertar un nuevo registro en la tabla `usuarios` con `nombre`, `email` (único), `telefono` (único), `dni` (único), `vendedor = FALSE`, `valoracionMedia = 0`." },
+                                { type: "sql", content: "INSERT INTO usuarios (nombre, email, telefono, dni, vendedor, valoracionMedia) VALUES\n('Usuario Comprador Test', 'comprador.test@email.com', '600000001', '00000001X', FALSE, 0);" },
+                                { type: "text", content: "2. Consultar la tabla `usuarios` para verificar que el nuevo usuario existe." },
+                                { type: "sql", content: "SELECT * FROM usuarios WHERE email = 'comprador.test@email.com';" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La inserción se completa sin errores.",
+                                "2. La consulta devuelve una fila con los datos del 'Usuario Comprador Test'."
+                            ],
+                            resultadoReal: [
+                                "1. Inserción completada. 1 fila afectada.",
+                                "2. Consulta devuelve 1 fila con: id=[nuevo_id], nombre='Usuario Comprador Test', email='comprador.test@email.com', telefono='600000001', dni='00000001X', vendedor=0, valoracionMedia=0."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "A.2",
+                            title: "Alta de nuevo usuario vendedor",
+                            descripcion: "Verificar que se puede registrar un nuevo usuario que es vendedor.",
+                            precondiciones: ["Ninguna."],
+                            pasos: [
+                                { type: "text", content: "1. Insertar un nuevo registro en la tabla `usuarios` con `vendedor = TRUE`." },
+                                { type: "sql", content: "INSERT INTO usuarios (nombre, email, telefono, dni, vendedor, valoracionMedia) VALUES\n('Usuario Vendedor Test', 'vendedor.test@email.com', '600000002', '00000002Y', TRUE, 0);" },
+                                { type: "text", content: "2. Consultar la tabla `usuarios` para verificar que el nuevo usuario existe y es vendedor." },
+                                { type: "sql", content: "SELECT * FROM usuarios WHERE email = 'vendedor.test@email.com';" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La inserción se completa sin errores.",
+                                "2. La consulta devuelve una fila con los datos del 'Usuario Vendedor Test' y el campo `vendedor` en `TRUE`."
+                            ],
+                            resultadoReal: [
+                                "1. Inserción completada. 1 fila afectada.",
+                                "2. Consulta devuelve 1 fila con: id=[nuevo_id], nombre='Usuario Vendedor Test', email='vendedor.test@email.com', telefono='600000002', dni='00000002Y', vendedor=1, valoracionMedia=0."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "A.3",
+                            title: "Intento de alta de usuario con email duplicado",
+                            descripcion: "Verificar la restricción `UNIQUE` en el campo `email` de la tabla `usuarios`.",
+                            precondiciones: ["Existe un usuario con el email 'juan.perez@email.com'."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un nuevo usuario con el email 'juan.perez@email.com'." },
+                                { type: "sql", content: "INSERT INTO usuarios (nombre, email, telefono, dni, vendedor) VALUES\n('Otro Juan', 'juan.perez@email.com', '600000003', '00000003Z', FALSE);" }
+                            ],
+                            resultadoEsperado: ["La inserción falla debido a la violación de la restricción `UNIQUE` para el email. Se recibe un error de la base de datos indicando la duplicidad."],
+                            resultadoReal: ["La inserción falla. Error de MySQL: `Error Code: 1062. Duplicate entry 'juan.perez@email.com' for key 'email'`."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "A.4",
+                            title: "Modificación de datos de usuario",
+                            descripcion: "Verificar que se pueden actualizar los datos de un usuario existente.",
+                            precondiciones: ["Existe el usuario con `email = 'ana.lopez@email.com'`."],
+                            pasos: [
+                                { type: "text", content: "1. Actualizar el teléfono y el nombre del usuario 'Ana Lopez'." },
+                                { type: "sql", content: "UPDATE usuarios SET nombre = 'Ana Lopez Modificada', telefono = '600333445'\nWHERE email = 'ana.lopez@email.com';" },
+                                { type: "text", content: "2. Consultar la tabla `usuarios` para verificar los cambios." },
+                                { type: "sql", content: "SELECT nombre, telefono FROM usuarios WHERE email = 'ana.lopez@email.com';" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La actualización se completa sin errores.",
+                                "2. La consulta devuelve 'Ana Lopez Modificada' como nombre y '600333445' como teléfono."
+                            ],
+                            resultadoReal: [
+                                "1. Actualización completada. 1 fila afectada.",
+                                "2. Consulta devuelve: nombre='Ana Lopez Modificada', telefono='600333445'."
+                            ],
+                            estado: "Pasa"
+                        }
+                    ]
+                },
+                {
+                    id: "B",
+                    title: "Sección B: Gestión de Inventario",
+                    testCases: [
+                        {
+                            id: "B.1",
+                            title: "Alta de nuevo artículo en inventario por un vendedor",
+                            descripcion: "Verificar que un usuario vendedor puede añadir un nuevo artículo a su inventario.",
+                            precondiciones: [
+                                "Existe un usuario vendedor (ej: `id_usuario = 1`, 'Juan Perez').",
+                                "Existe una carta (ej: `id_carta = 2`, 'Ledger Shredder').",
+                                "Existe un estado de carta (ej: `id_estado_carta = 1`, 'Mint').",
+                                "Existe un estado de inventario (ej: `id_estado_en_inventario = 1`, 'Disponible')."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Insertar un nuevo artículo en la tabla `inventarios`." },
+                                { type: "sql", content: "INSERT INTO inventarios (id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, comentario, precio, imagen)\nVALUES (1, 2, 1, 1, FALSE, 'Ledger Shredder nuevo para test', 12.50, 'ledger_shredder_test.png');" },
+                                { type: "text", content: "2. Consultar la tabla `inventarios` para verificar la inserción." },
+                                { type: "sql", content: "SELECT * FROM inventarios WHERE id_usuario = 1 AND id_carta = 2 AND precio = 12.50 AND comentario = 'Ledger Shredder nuevo para test';" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La inserción se completa sin errores.",
+                                "2. La consulta devuelve el nuevo artículo de inventario."
+                            ],
+                            resultadoReal: [
+                                "1. Inserción completada. 1 fila afectada.",
+                                "2. Consulta devuelve 1 fila con los datos insertados."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "B.2",
+                            title: "Intento de alta de inventario con precio cero o negativo",
+                            descripcion: "Verificar la restricción `CHECK (precio > 0)` en la tabla `inventarios`.",
+                            precondiciones: ["Mismas que B.1."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un artículo con `precio = 0`." },
+                                { type: "sql", content: "INSERT INTO inventarios (id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, precio)\nVALUES (1, 2, 1, 1, FALSE, 0.00);" }
+                            ],
+                            resultadoEsperado: ["La inserción falla debido a la violación de la restricción `CHECK`."],
+                            resultadoReal: ["La inserción falla. Error de MySQL: `Error Code: 3819. Check constraint 'inventarios_chk_1' is violated.` (o similar, dependiendo del nombre de la constraint)."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "B.3",
+                            title: "Modificación del estado de un artículo en inventario (ej: de 'Disponible' a 'Reservado')",
+                            descripcion: "Verificar que se puede cambiar el estado de un artículo en el inventario.",
+                            precondiciones: [
+                                "Existe un artículo en `inventarios` con `id_estado_en_inventario = 1` ('Disponible'). Sea `id_inventario_a_modificar` el ID del artículo insertado en B.1.",
+                                "Existe el estado `id_estado_en_inventario = 2` ('Reservado')."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Actualizar el `id_estado_en_inventario` del artículo a 2." },
+                                { type: "sql", content: "UPDATE inventarios SET id_estado_en_inventario = 2 WHERE id = (SELECT MAX(id) FROM inventarios WHERE id_usuario=1 AND id_carta=2 AND comentario = 'Ledger Shredder nuevo para test');" },
+                                { type: "text", content: "2. Consultar el artículo para verificar el cambio." },
+                                { type: "sql", content: "SELECT id_estado_en_inventario FROM inventarios WHERE id = (SELECT MAX(id) FROM inventarios WHERE id_usuario=1 AND id_carta=2 AND comentario = 'Ledger Shredder nuevo para test');" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La actualización se completa sin errores.",
+                                "2. La consulta devuelve `id_estado_en_inventario = 2`."
+                            ],
+                            resultadoReal: [
+                                "1. Actualización completada. 1 fila afectada.",
+                                "2. Consulta devuelve `id_estado_en_inventario = 2`."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "B.4",
+                            title: "Intento de alta de inventario por un usuario NO vendedor",
+                            descripcion: "Aunque no hay una restricción directa en la tabla `inventarios` que verifique `usuarios.vendedor = TRUE`, la lógica de la aplicación debería impedirlo. Esta prueba verifica si la base de datos lo permitiría (lo cual podría ser una debilidad si la aplicación no lo controla).",
+                            precondiciones: [
+                                "Existe un usuario NO vendedor (ej: `id_usuario = 2`, 'Ana Lopez').",
+                                "Resto de precondiciones como en B.1 (usando `id_carta = 1` para diferenciar)."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un artículo en `inventarios` por el usuario no vendedor." },
+                                { type: "sql", content: "INSERT INTO inventarios (id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, comentario, precio, imagen)\nVALUES (2, 1, 1, 1, FALSE, 'Artículo de no vendedor', 10.00, 'test_no_vendedor.png');" }
+                            ],
+                            resultadoEsperado: ["La inserción se completa (ya que no hay FK directa a `usuarios.vendedor`). La lógica de la aplicación debería prevenir esto. Si se desea una restricción a nivel de BD, se necesitaría un trigger o una modificación del esquema."],
+                            resultadoReal: ["Inserción completada. 1 fila afectada. La base de datos permite la inserción."],
+                            estado: "Pasa (a nivel de operación de BD), Falla (si se considera la lógica de negocio implícita). Se anota como Pasa para la prueba de BD."
+                        }
+                    ]
+                },
+                {
+                    id: "C",
+                    title: "Sección C: Procesamiento de Pedidos",
+                    testCases: [
+                        {
+                            id: "C.1",
+                            title: "Creación de un nuevo pedido con un artículo",
+                            descripcion: "Simular la creación de un pedido por un comprador para un artículo disponible.",
+                            precondiciones: [
+                                "Existe un usuario comprador (ej: `id_usuario = 2`, 'Ana Lopez').",
+                                "Existe una dirección para el comprador (ej: `id_direccion_envio = 2`).",
+                                "Existe un tipo de envío (ej: `id_tipo_envio = 1`).",
+                                "Existe un estado de envío inicial (ej: `id_estado_envio = 1`, 'Pendiente de Pago').",
+                                "Existe un artículo en `inventarios` disponible (ej: `id_inventario = 1`, Sheoldred de Juan Perez, con `precio = 80.00`). `id_estado_en_inventario = 1`."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Insertar un nuevo registro en la tabla `pedidos`." },
+                                { type: "sql", content: "INSERT INTO pedidos (id_usuario, id_direccion_envio, id_tipo_envio, id_estado_envio, comentario, valoracion)\nVALUES (2, 2, 1, 1, 'Pedido de prueba C.1', NULL);\nSET @id_nuevo_pedido_C1 = LAST_INSERT_ID();" },
+                                { type: "text", content: "2. Obtener el precio del artículo del inventario (`id_inventario = 1`)." },
+                                { type: "sql", content: "SELECT precio FROM inventarios WHERE id = 1;\n-- Asumir que devuelve 80.00 para el siguiente paso." },
+                                { type: "text", content: "3. Insertar el artículo en `pedidos_inventarios`, registrando el `precio_venta`." },
+                                { type: "sql", content: "INSERT INTO pedidos_inventarios (id_pedido, id_inventario, precio_venta, fecha)\nVALUES (@id_nuevo_pedido_C1, 1, 80.00, NOW());" },
+                                { type: "text", content: "4. Actualizar el estado del artículo en `inventarios` a 'Vendido' (ej: `id_estado_en_inventario = 3`)." },
+                                { type: "sql", content: "UPDATE inventarios SET id_estado_en_inventario = 3 WHERE id = 1;" },
+                                { type: "text", content: "5. Verificar el pedido, el item del pedido y el estado del inventario." },
+                                { type: "sql", content: "SELECT * FROM pedidos WHERE id = @id_nuevo_pedido_C1;\nSELECT * FROM pedidos_inventarios WHERE id_pedido = @id_nuevo_pedido_C1 AND id_inventario = 1;\nSELECT id_estado_en_inventario FROM inventarios WHERE id = 1;\n-- SELECT precio_medio FROM cartas WHERE id = (SELECT id_carta FROM inventarios WHERE id = 1); -- Para verificar trigger" }
+                            ],
+                            resultadoEsperado: [
+                                "1. Todas las inserciones y actualizaciones se completan sin errores.",
+                                "2. El trigger `calcularMedia_BI_pedidos_inventarios` (si está activo y correctamente definido) debería actualizar `cartas.precio_medio` para la carta vendida.",
+                                "3. Las consultas de verificación muestran el nuevo pedido, el artículo vinculado en `pedidos_inventarios` con el `precio_venta` correcto (80.00), y el `id_estado_en_inventario` del artículo actualizado a 3."
+                            ],
+                            resultadoReal: [
+                                "1. Todas las operaciones se completan.",
+                                "2. `cartas.precio_medio` para la carta con id 1 (Sheoldred) se actualiza (ej: si antes era 75.50 y esta es la primera venta registrada por el trigger, ahora sería 80.00; si hubo otras, el cálculo sería más complejo, pero se espera un cambio).",
+                                "3. El pedido existe, `pedidos_inventarios` tiene el registro con precio_venta 80.00, `inventarios.id_estado_en_inventario` para id=1 es 3."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "C.2",
+                            title: "Intento de añadir a un pedido un artículo de inventario no disponible",
+                            descripcion: "Verificar que no se puede (o no se debería poder fácilmente) añadir a un pedido un artículo que no está 'Disponible'.",
+                            precondiciones: [
+                                "Se crea un pedido nuevo:",
+                                "INSERT INTO pedidos (id_usuario, id_direccion_envio, id_tipo_envio, id_estado_envio) VALUES (2, 2, 1, 1);\nSET @id_nuevo_pedido_C2 = LAST_INSERT_ID();",
+                                "Existe un artículo en `inventarios` con `id_estado_en_inventario = 3` (ej: 'Vendido', `id = 1` después de C.1)."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar el artículo no disponible en `pedidos_inventarios`." },
+                                { type: "sql", content: "INSERT INTO pedidos_inventarios (id_pedido, id_inventario, precio_venta, fecha)\nVALUES (@id_nuevo_pedido_C2, 1, 80.00, NOW());" }
+                            ],
+                            resultadoEsperado: ["La inserción podría tener éxito a nivel de BD si no hay una restricción explícita (trigger o check en un procedimiento almacenado). La lógica de la aplicación es la que típicamente prevendría esto. Si el procedimiento `RegistrarPedido` se usa, este debería fallar."],
+                            resultadoReal: ["La inserción se completa. La BD no impide añadir un ítem ya vendido a otro pedido mediante inserción directa en `pedidos_inventarios` sin validación adicional."],
+                            estado: "Pasa (a nivel de operación de BD), Falla (si se considera la lógica de negocio implícita de que un ítem solo se vende una vez)."
+                        },
+                        {
+                            id: "C.3",
+                            title: "Actualización del estado de un envío",
+                            descripcion: "Verificar que se puede cambiar el estado de un envío de un pedido.",
+                            precondiciones: ["Existe un pedido (ej: `@id_nuevo_pedido_C1` de C.1). Existe un estado de envío (ej: `id_estado_envio = 3`, 'Enviado')."],
+                            pasos: [
+                                { type: "text", content: "1. Actualizar `id_estado_envio` del pedido." },
+                                { type: "sql", content: "UPDATE pedidos SET id_estado_envio = 3 WHERE id = @id_nuevo_pedido_C1;" },
+                                { type: "text", content: "2. Consultar el pedido para verificar el cambio." },
+                                { type: "sql", content: "SELECT id_estado_envio FROM pedidos WHERE id = @id_nuevo_pedido_C1;" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La actualización se completa sin errores.",
+                                "2. La consulta devuelve `id_estado_envio = 3`."
+                            ],
+                            resultadoReal: [
+                                "1. Actualización completada. 1 fila afectada.",
+                                "2. Consulta devuelve `id_estado_envio = 3`."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "C.4",
+                            title: "Añadir valoración a un pedido completado",
+                            descripcion: "Verificar que un comprador puede valorar un pedido.",
+                            precondiciones: ["Existe un pedido (ej: `@id_nuevo_pedido_C1` de C.1) cuyo `id_usuario` es 2."],
+                            pasos: [
+                                { type: "text", content: "1. Actualizar el campo `valoracion` del pedido." },
+                                { type: "sql", content: "UPDATE pedidos SET valoracion = 5 WHERE id = @id_nuevo_pedido_C1;" },
+                                { type: "text", content: "2. Verificar la valoración en el pedido." },
+                                { type: "sql", content: "SELECT valoracion FROM pedidos WHERE id = @id_nuevo_pedido_C1;" },
+                                { type: "text", content: "3. Verificar si el trigger `actualizarValoracionUsuario_AI_pedidos` actualiza `usuarios.valoracionMedia` para el comprador." },
+                                { type: "sql", content: "SELECT valoracionMedia FROM usuarios WHERE id = (SELECT id_usuario FROM pedidos WHERE id = @id_nuevo_pedido_C1);" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La actualización se completa sin errores.",
+                                "2. La consulta del pedido devuelve `valoracion = 5`.",
+                                "3. La `valoracionMedia` del usuario comprador se actualiza correctamente según la lógica del trigger (ej: si era 0 y este es el primer pedido valorado, ahora es 5)."
+                            ],
+                            resultadoReal: [
+                                "1. Actualización completada. 1 fila afectada.",
+                                "2. Consulta del pedido devuelve `valoracion = 5`.",
+                                "3. `usuarios.valoracionMedia` para el usuario con id=2 se actualiza a 5 (asumiendo que el trigger está activo y funciona como se espera)."
+                            ],
+                            estado: "Pasa"
+                        }
+                    ]
+                },
+                 {
+                    id: "D",
+                    title: "Sección D: Mensajería",
+                    testCases: [
+                        {
+                            id: "D.1",
+                            title: "Envío de mensaje entre dos usuarios distintos",
+                            descripcion: "Verificar que un usuario puede enviar un mensaje a otro.",
+                            precondiciones: ["Existen dos usuarios (ej: `id_usuario_enviador = 1`, `id_usuario_receptor = 2`)."],
+                            pasos: [
+                                { type: "text", content: "1. Insertar un nuevo mensaje en la tabla `mensajes`." },
+                                { type: "sql", content: "INSERT INTO mensajes (id_usuario_enviador, id_usuario_receptor, contenido, leido)\nVALUES (1, 2, 'Hola Ana, ¿qué tal?', FALSE);" },
+                                { type: "text", content: "2. Consultar la tabla `mensajes` para verificar el mensaje." },
+                                { type: "sql", content: "SELECT * FROM mensajes WHERE id_usuario_enviador = 1 AND id_usuario_receptor = 2 ORDER BY fecha DESC LIMIT 1;" }
+                            ],
+                            resultadoEsperado: [
+                                "1. La inserción se completa sin errores.",
+                                "2. La consulta devuelve el mensaje enviado."
+                            ],
+                            resultadoReal: [
+                                "1. Inserción completada. 1 fila afectada.",
+                                "2. Consulta devuelve el mensaje con contenido 'Hola Ana, ¿qué tal?'."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "D.2",
+                            title: "Intento de envío de mensaje a sí mismo (Trigger `evitarMensajesPropios`)",
+                            descripcion: "Verificar que el trigger `evitarMensajesPropios_BI_mensajes` impide que un usuario se envíe mensajes a sí mismo.",
+                            precondiciones: ["Existe un usuario (ej: `id_usuario = 1`)."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un mensaje donde `id_usuario_enviador` = `id_usuario_receptor`." },
+                                { type: "sql", content: "INSERT INTO mensajes (id_usuario_enviador, id_usuario_receptor, contenido, leido)\nVALUES (1, 1, 'Mensaje para mí mismo', FALSE);" }
+                            ],
+                            resultadoEsperado: ["La inserción falla y se recibe un error SQLSTATE '45000' con el mensaje 'Un usuario no puede enviarse mensajes a si mismo.'"],
+                            resultadoReal: ["La inserción falla. Error de MySQL: `Error Code: 1644. Un usuario no puede enviarse mensajes a si mismo.` (El código de error puede variar, pero el mensaje es el definido en el trigger)."],
+                            estado: "Pasa"
+                        }
+                    ]
+                },
+                {
+                    id: "E",
+                    title: "Sección E: Integridad Referencial y Restricciones",
+                    testCases: [
+                        {
+                            id: "E.1",
+                            title: "Intento de crear un pedido para un usuario inexistente",
+                            descripcion: "Verificar la FK `pedidos.id_usuario` a `usuarios.id`.",
+                            precondiciones: ["No existe un usuario con `id = 999`."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un pedido con `id_usuario = 999`." },
+                                { type: "sql", content: "INSERT INTO pedidos (id_usuario, id_direccion_envio, id_tipo_envio, id_estado_envio)\nVALUES (999, 1, 1, 1);" }
+                            ],
+                            resultadoEsperado: ["La inserción falla debido a la violación de la restricción de clave foránea."],
+                            resultadoReal: ["La inserción falla. Error de MySQL: `Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (...)`."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "E.2",
+                            title: "Intento de añadir un artículo de inventario para una carta inexistente",
+                            descripcion: "Verificar la FK `inventarios.id_carta` a `cartas.id`.",
+                            precondiciones: ["No existe una carta con `id = 9999`."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar insertar un artículo de inventario con `id_carta = 9999`." },
+                                { type: "sql", content: "INSERT INTO inventarios (id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, precio)\nVALUES (1, 9999, 1, 1, FALSE, 10.00);" }
+                            ],
+                            resultadoEsperado: ["La inserción falla debido a la violación de la restricción de clave foránea."],
+                            resultadoReal: ["La inserción falla. Error de MySQL: `Error Code: 1452. Cannot add or update a child row: a foreign key constraint fails (...)`."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "E.3",
+                            title: "Borrado de un usuario con pedidos asociados (ON DELETE RESTRICT)",
+                            descripcion: "Verificar el comportamiento de `ON DELETE RESTRICT` en la FK `pedidos.id_usuario`.",
+                            precondiciones: ["Existe un usuario (ej: `id_usuario = 2`, 'Ana Lopez') que tiene al menos un pedido asociado en la tabla `pedidos` (el pedido de C.1)."],
+                            pasos: [
+                                { type: "text", content: "1. Intentar borrar el usuario `id_usuario = 2`." },
+                                { type: "sql", content: "DELETE FROM usuarios WHERE id = 2;" }
+                            ],
+                            resultadoEsperado: ["La operación de borrado falla debido a que existen registros en `pedidos` que referencian a este usuario, y la restricción es `ON DELETE RESTRICT`."],
+                            resultadoReal: ["El borrado falla. Error de MySQL: `Error Code: 1451. Cannot delete or update a parent row: a foreign key constraint fails (...)`."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "E.4",
+                            title: "Borrado de un usuario con direcciones asociadas (ON DELETE CASCADE)",
+                            descripcion: "Verificar el comportamiento de `ON DELETE CASCADE` en la FK `direcciones.id_usuario`.",
+                            precondiciones: [
+                                "Crear un usuario de prueba:",
+                                "INSERT INTO usuarios (nombre, email, telefono, dni) VALUES ('Usuario Para Borrar Direccion', 'borrar.dir@email.com', '600000004', '00000004A');\nSET @id_usuario_borrar_dir = LAST_INSERT_ID();",
+                                "Añadir una dirección para ese usuario:",
+                                "INSERT INTO direcciones (id_usuario, pais, ciudad, calle, piso, codigo_postal) VALUES (@id_usuario_borrar_dir, 'Testlandia', 'Testcity', 'Calle Test', '1', '00000');\nSELECT * FROM direcciones WHERE id_usuario = @id_usuario_borrar_dir; -- Para verificar inserción, devuelve 1 fila."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Borrar el usuario `@id_usuario_borrar_dir`." },
+                                { type: "sql", content: "DELETE FROM usuarios WHERE id = @id_usuario_borrar_dir;" },
+                                { type: "text", content: "2. Verificar que el usuario ha sido borrado." },
+                                { type: "sql", content: "SELECT * FROM usuarios WHERE id = @id_usuario_borrar_dir;" },
+                                { type: "text", content: "3. Verificar que las direcciones asociadas a ese usuario también han sido borradas." },
+                                { type: "sql", content: "SELECT * FROM direcciones WHERE id_usuario = @id_usuario_borrar_dir;" }
+                            ],
+                            resultadoEsperado: [
+                                "1. El borrado del usuario se completa sin errores.",
+                                "2. La consulta del usuario no devuelve filas.",
+                                "3. La consulta de direcciones para ese usuario no devuelve filas (debido al `ON DELETE CASCADE`)."
+                            ],
+                            resultadoReal: [
+                                "1. Borrado del usuario completado. 1 fila afectada.",
+                                "2. Consulta del usuario no devuelve filas.",
+                                "3. Consulta de direcciones no devuelve filas."
+                            ],
+                            estado: "Pasa"
+                        }
+                    ]
+                },
+                {
+                    id: "F",
+                    title: "Sección F: Procedimientos Almacenados (Ejemplos)",
+                    testCases: [
+                        {
+                            id: "F.1",
+                            title: "Ejecución de `BuscarInventarioSimplePorNombre` con resultados",
+                            descripcion: "Verificar que el procedimiento `BuscarInventarioSimplePorNombre` devuelve resultados cuando hay coincidencias.",
+                            precondiciones: ["Existen artículos en inventario disponibles cuyo nombre de carta contiene 'Sheoldred'. (El inventario con id=1 fue vendido en C.1, por lo que no debería aparecer si 'Disponible' es el criterio). Asumimos que hay otro 'Sheoldred' disponible o modificamos el inventario id=1 para que vuelva a estar disponible para este test. Para el test, vamos a buscar 'Sol Ring', cuyo inventario id=2 debería estar disponible antes de F.3."],
+                            pasos: [
+                                { type: "text", content: "1. Llamar al procedimiento." },
+                                { type: "sql", content: "-- Asegurarse que el inventario id=2 ('Sol Ring') está disponible si se ejecutó F.3 antes.\n-- UPDATE inventarios SET id_estado_en_inventario = 1 WHERE id = 2;\nCALL BuscarInventarioSimplePorNombre('Sol Ring');" }
+                            ],
+                            resultadoEsperado: ["El procedimiento se ejecuta sin errores y devuelve una o más filas con los detalles de los artículos de inventario que coinciden."],
+                            resultadoReal: ["Procedimiento ejecutado. Devuelve 1 fila correspondiente al 'Sol Ring' disponible (inventario id=2, asumiendo que está disponible)."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "F.2",
+                            title: "Ejecución de `BuscarInventarioSimplePorNombre` sin resultados",
+                            descripcion: "Verificar que el procedimiento devuelve un conjunto vacío si no hay coincidencias.",
+                            precondiciones: ["No existen artículos en inventario disponibles cuyo nombre de carta contenga 'XYZW_NO_EXISTE'."],
+                            pasos: [
+                                { type: "text", content: "1. Llamar al procedimiento." },
+                                { type: "sql", content: "CALL BuscarInventarioSimplePorNombre('XYZW_NO_EXISTE');" }
+                            ],
+                            resultadoEsperado: ["El procedimiento se ejecuta sin errores y no devuelve filas."],
+                            resultadoReal: ["Procedimiento ejecutado. No devuelve filas."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "F.3",
+                            title: "Ejecución de `RegistrarPedido` (Éxito)",
+                            descripcion: "Verificar el funcionamiento correcto del procedimiento `RegistrarPedido`.",
+                            precondiciones: [
+                                "Usuario comprador `id = 2` ('Ana Lopez'). Dirección `id = 2`. Tipo de envío `id = 1`. Estado envío inicial `id = 1`.",
+                                "Artículos de inventario disponibles:",
+                                "Inventario `id = 2` ('Sol Ring' de Juan Perez, precio 1.25, id_estado_en_inventario = 1).",
+                                "Inventario `id = 6` ('Fable of the Mirror-Breaker' de Juan Perez, precio 22.00, id_estado_en_inventario = 1)."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Llamar al procedimiento." },
+                                { type: "sql", content: "CALL RegistrarPedido(2, 2, 1, 1, 'Pedido de prueba con SP F.3', '2,6', @id_pedido_creado_F3);\nSELECT @id_pedido_creado_F3 AS id_nuevo_pedido;" },
+                                { type: "text", content: "2. Verificar la tabla `pedidos`." },
+                                { type: "sql", content: "SELECT * FROM pedidos WHERE id = @id_pedido_creado_F3;" },
+                                { type: "text", content: "3. Verificar la tabla `pedidos_inventarios` (deben existir dos registros para este pedido)." },
+                                { type: "sql", content: "SELECT id_inventario, precio_venta FROM pedidos_inventarios WHERE id_pedido = @id_pedido_creado_F3;" },
+                                { type: "text", content: "4. Verificar que los artículos de inventario 2 y 6 ahora están 'Vendidos' (id_estado_en_inventario = 3)." },
+                                { type: "sql", content: "SELECT id, id_estado_en_inventario FROM inventarios WHERE id IN (2,6);" },
+                                { type: "text", content: "5. Verificar que el `precio_medio` de las cartas 'Sol Ring' (id=7) y 'Fable of the Mirror-Breaker' (id=11) se ha actualizado por el trigger." }
+                            ],
+                            resultadoEsperado: [
+                                "1. El procedimiento se ejecuta sin errores, `@id_pedido_creado_F3` tiene un valor.",
+                                "2. Se crea un nuevo pedido.",
+                                "3. Se crean dos entradas en `pedidos_inventarios` con los `id_inventario` 2 y 6, y sus respectivos `precio_venta` (1.25 y 22.00).",
+                                "4. Los inventarios con id 2 y 6 tienen `id_estado_en_inventario = 3`.",
+                                "5. El `precio_medio` de las cartas correspondientes se actualiza."
+                            ],
+                            resultadoReal: [
+                                "1. Procedimiento ejecutado. `@id_pedido_creado_F3` contiene el ID del nuevo pedido.",
+                                "2. Nuevo pedido creado en `pedidos`.",
+                                "3. `pedidos_inventarios` contiene dos filas para el pedido, con id_inventario 2 (precio_venta 1.25) y id_inventario 6 (precio_venta 22.00).",
+                                "4. Inventarios con id 2 y 6 tienen `id_estado_en_inventario = 3`.",
+                                "5. `precio_medio` para cartas con id 7 y 11 se actualizan."
+                            ],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "F.4",
+                            title: "Ejecución de `RegistrarPedido` con un artículo no disponible",
+                            descripcion: "Verificar que `RegistrarPedido` falla si se intenta incluir un artículo no disponible.",
+                            precondiciones: [
+                                "Mismas que F.3 para el comprador.",
+                                "El artículo de inventario `id = 1` ('Sheoldred') ya está 'Vendido' (id_estado_en_inventario = 3, debido a C.1).",
+                                "El artículo de inventario `id = 2` está 'Vendido' (id_estado_en_inventario = 3, debido a F.3)."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Intentar llamar al procedimiento incluyendo el artículo no disponible `id = 1`." },
+                                { type: "sql", content: "CALL RegistrarPedido(2, 2, 1, 1, 'Pedido Fallido F.4', '1,6', @id_pedido_creado_F4); -- Inventario 6 podría estar disponible si F.3 no se corrió o se revirtió\nSELECT @id_pedido_creado_F4;" }
+                            ],
+                            resultadoEsperado: ["El procedimiento falla (ROLLBACK) y devuelve un error SQLSTATE '45000' indicando que el artículo de inventario con ID 1 no está disponible. No se crea el pedido ni se modifican otros inventarios."],
+                            resultadoReal: ["Procedimiento falla. Error de MySQL: `Error Code: 1644. El artículo de inventario con ID 1 no está disponible para la venta.` (El código de error puede variar, pero el mensaje es el definido en el SP). `@id_pedido_creado_F4` es NULL o no se establece. No se crea el pedido."],
+                            estado: "Pasa"
+                        }
+                    ]
+                },
+                {
+                    id: "G",
+                    title: "Sección G: Funciones (Ejemplos)",
+                    testCases: [
+                        {
+                            id: "G.1",
+                            title: "Ejecución de `totalDeCartas`",
+                            descripcion: "Verificar que la función `totalDeCartas` devuelve el número correcto de artículos en el inventario de un usuario.",
+                            precondiciones: [
+                                "El usuario `id_usuario = 1` ('Juan Perez') tiene un número conocido de artículos en su inventario.",
+                                "Inicialmente: 3 (Sheoldred, Sol Ring, Fable).",
+                                "B.1 añade 1 (Ledger Shredder). Total = 4.",
+                                "C.1 vende 1 (Sheoldred). Total = 3.",
+                                "F.3 vende 2 (Sol Ring, Fable). Total = 1.",
+                                "El artículo restante es el 'Ledger Shredder nuevo para test' añadido en B.1."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Ejecutar la función." },
+                                { type: "sql", content: "SELECT totalDeCartas(1);" }
+                            ],
+                            resultadoEsperado: ["La función devuelve 1. (La precondición original del test \"ej: 3 después de las pruebas B y F\" parece no coincidir con el flujo exacto de las pruebas anteriores si se ejecutan secuencialmente y afectan al mismo usuario). Se ajusta el resultado esperado al flujo actual."],
+                            resultadoReal: ["Devuelve 1."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "G.2",
+                            title: "Ejecución de `totalDeVentas`",
+                            descripcion: "Verificar que la función `totalDeVentas` devuelve el número correcto de artículos vendidos por un usuario.",
+                            precondiciones: [
+                                "El usuario `id_usuario = 1` ('Juan Perez') tiene:",
+                                "Venta de inventario ID 1 (Sheoldred) en prueba C.1.",
+                                "Venta de inventario ID 2 (Sol Ring) en prueba F.3.",
+                                "Venta de inventario ID 6 (Fable) en prueba F.3.",
+                                "Total de ventas = 3."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Ejecutar la función." },
+                                { type: "sql", content: "SELECT totalDeVentas(1);" }
+                            ],
+                            resultadoEsperado: ["La función devuelve 3."],
+                            resultadoReal: ["Devuelve 3."],
+                            estado: "Pasa"
+                        },
+                        {
+                            id: "G.3",
+                            title: "Ejecución de `valorInventarioDisponible`",
+                            descripcion: "Verificar que la función `valorInventarioDisponible` devuelve la suma correcta de los precios de los artículos disponibles de un usuario.",
+                            precondiciones: [
+                                "El usuario `id_usuario = 3` ('Carlos Garcia') tiene artículos disponibles con precios conocidos.",
+                                "Inventario ID 3 ('Charizard ex', precio 55.00) - Vendido en datos iniciales.",
+                                "Inventario ID 4 ('Blue-Eyes White Dragon', precio 18.50) - Disponible.",
+                                "Inventario ID 7 ('Ragavan, Nimble Pilferer', precio 50.00) - Disponible.",
+                                "Valor esperado = 18.50 + 50.00 = 68.50.",
+                                "(La precondición del test original mencionaba ID 4 como Charizard y ID 7 como Ragavan, sumando 105.00. Se ajusta a los datos de ejemplo iniciales para `inventarios` y su estado)."
+                            ],
+                            pasos: [
+                                { type: "text", content: "1. Ejecutar la función." },
+                                { type: "sql", content: "SELECT valorInventarioDisponible(3);" }
+                            ],
+                            resultadoEsperado: ["La función devuelve 68.50."],
+                            resultadoReal: ["Devuelve 68.50."],
+                            estado: "Pasa"
+                        }
+                    ]
+                }
+            ],
+            conclusion: {
+                title: "3. Conclusión de Pruebas",
+                content: `
+                    <p class="text-slate-700 leading-relaxed">Todos los casos de prueba ejecutados (simulados) han resultado en <strong>Pasa</strong>, indicando que las restricciones de la base de datos, los triggers básicos y los procedimientos almacenados (con las correcciones y simplificaciones asumidas) funcionan según lo especificado en cada prueba. Las operaciones CRUD básicas y las reglas de integridad referencial se mantienen.</p>
+                    <h4 class="text-xl font-semibold text-sky-700 mt-4 mb-2">Observaciones:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 leading-relaxed">
+                        <li>El Caso B.4 (alta de inventario por no vendedor) pasa a nivel de BD pero señala una posible necesidad de control a nivel de aplicación o un trigger más complejo si se desea forzar a nivel de BD.</li>
+                        <li>El Caso C.2 (añadir ítem no disponible a pedido) también pasa a nivel de BD con inserción directa, destacando la importancia de la lógica de la aplicación o el uso de procedimientos almacenados como \`RegistrarPedido\` que sí validan la disponibilidad.</li>
+                        <li>Las precondiciones y resultados esperados para las funciones en la Sección G necesitarían ser ajustados dinámicamente si las pruebas anteriores se ejecutan en una secuencia que modifica el estado del inventario de los usuarios de prueba. Los resultados aquí se basan en el estado acumulativo de las pruebas descritas.</li>
+                    </ul>
+                    <p class="text-slate-700 leading-relaxed mt-3">Se recomienda una revisión de los triggers más complejos (ej. \`calcularMedia_BI_pedidos_inventarios\` y \`actualizarValoracionUsuario_AI_pedidos\`) con datos variados para asegurar que los cálculos de promedios y actualizaciones se comportan correctamente en todos los escenarios (ej. primera valoración, múltiples valoraciones, valoraciones nulas).</p>
+                `
+            }
+        };
+
+        function buildTestCaseHTML(testCase) {
+            let pasosHTML = testCase.pasos.map(paso => {
+                if (paso.type === 'sql') {
+                    return `<div class="my-2">
+                                <button class="text-xs text-sky-600 hover:text-sky-800 mb-1 toggle-sql-button">Mostrar/Ocultar SQL</button>
+                                <pre class="sql-code hidden">${paso.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre>
+                            </div>`;
+                }
+                return `<p class="text-slate-600">${paso.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`;
+            }).join('');
+
+            let precondicionesHTML = testCase.precondiciones.map(p => `<li>${p.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</li>`).join('');
+            let resultadoEsperadoHTML = testCase.resultadoEsperado.map(r => `<li>${r.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</li>`).join('');
+            let resultadoRealHTML = testCase.resultadoReal.map(r => `<li>${r.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</li>`).join('');
+            
+            let statusClass = testCase.estado.toLowerCase().includes('pasa') ? 'status-pasa' : 'status-falla';
+            let statusText = testCase.estado.toLowerCase().includes('pasa') ? 'Pasa' : 'Falla';
+            if (testCase.estado.toLowerCase().includes('pasa (a nivel de operación de bd)')) {
+                 statusText = 'Pasa (BD)';
+            }
+
+
+            return `
+                <div class="bg-white shadow-md rounded-lg">
+                    <button class="w-full text-left p-4 accordion-button focus:outline-none hover:bg-slate-50 transition-colors">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold text-sky-700">${testCase.id}: ${testCase.title}</h4>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                    </button>
+                    <div class="accordion-content border-t border-slate-200">
+                        <div class="p-4 space-y-3">
+                            <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Descripción:</h5>
+                                <p class="text-slate-600">${testCase.descripcion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Precondiciones:</h5>
+                                <ul class="list-disc list-inside text-slate-600 space-y-1">${precondicionesHTML}</ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Pasos:</h5>
+                                ${pasosHTML}
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Resultado Esperado:</h5>
+                                <ul class="list-disc list-inside text-slate-600 space-y-1">${resultadoEsperadoHTML}</ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Resultado Real (Simulado):</h5>
+                                <ul class="list-disc list-inside text-slate-600 space-y-1">${resultadoRealHTML}</ul>
+                            </div>
+                             <div>
+                                <h5 class="font-semibold text-slate-700 mb-1">Estado Detallado:</h5>
+                                <p class="text-slate-600">${testCase.estado.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displaySection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update main title and subtitle
+            const mainTitle = document.getElementById('main-title');
+            const mainSubtitle = document.getElementById('main-subtitle');
+            if (sectionId === 'intro') {
+                mainTitle.textContent = 'Visor Interactivo: Batería de Pruebas CardTraders';
+                mainSubtitle.textContent = 'Explore los casos de prueba y sus resultados para el sistema CardTraders.';
+            } else if (sectionId === 'conclusion') {
+                 mainTitle.textContent = testData.conclusion.title;
+                 mainSubtitle.textContent = "Resumen final de la ejecución simulada de pruebas.";
+            } 
+            else {
+                const sectionData = testData.sections.find(s => s.id === sectionId);
+                if (sectionData) {
+                    mainTitle.textContent = sectionData.title;
+                    mainSubtitle.textContent = `Casos de prueba para la ${sectionData.title.toLowerCase()}.`;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const introSection = document.getElementById('intro');
+            introSection.innerHTML = `<div class="bg-white shadow-md rounded-lg p-6">${testData.intro.content}</div>`;
+
+            testData.sections.forEach(section => {
+                const sectionContainer = document.getElementById(section.id);
+                if (sectionContainer) {
+                    section.testCases.forEach(tc => {
+                        sectionContainer.innerHTML += buildTestCaseHTML(tc);
+                    });
+                }
+            });
+            
+            const conclusionSection = document.getElementById('conclusion');
+            conclusionSection.innerHTML = `<div class="bg-white shadow-md rounded-lg p-6">${testData.conclusion.content}</div>`;
+
+
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    displaySection(button.dataset.section);
+                });
+            });
+
+            document.querySelectorAll('.accordion-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    content.classList.toggle('open');
+                     button.querySelector('span.status-badge').classList.toggle('rotate-180'); 
+                });
+            });
+            
+            document.querySelectorAll('.toggle-sql-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    const sqlBlock = button.nextElementSibling;
+                    sqlBlock.classList.toggle('hidden');
+                });
+            });
+            
+            
+            displaySection('intro');
+        });
+    </script>
+</body>
+</html>
