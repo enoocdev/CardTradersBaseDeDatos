@@ -417,11 +417,11 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE FUNCTION valorInventario(usuario_id INT)
+CREATE FUNCTION valorInventarioDisponible(usuario_id INT)
 RETURNS DECIMAL(30,2)
 DETERMINISTIC
 BEGIN
-    DECLARE total DECIMAL(30,2) DEFAULT(SELECT SUM(precio) FROM inventarios WHERE id_usuario = usuario_id);
+    DECLARE total DECIMAL(30,2) DEFAULT(SELECT SUM(precio) FROM inventarios WHERE id_usuario = usuario_id AND id_estado_en_inventario = 3);
     RETURN IFNULL(total, 0);
 END;
 //
