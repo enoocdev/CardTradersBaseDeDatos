@@ -153,149 +153,194 @@ CREATE TABLE IF NOT EXISTS pedidos_inventarios(
 
 
 
+USE CardTraders;
 
--- Insertar datos en la tabla usuarios
-INSERT INTO usuarios (nombre, email, telefono, dni, vendedor, valoracionMedia) VALUES
-('Juan Perez', 'juan.perez@email.com', '600111222', '12345678A', TRUE, 4),
-('Ana Lopez', 'ana.lopez@email.com', '600333444', '87654321B', FALSE, 0),
-('Carlos Garcia', 'carlos.garcia@email.com', '600555666', '11223344C', TRUE, 5),
-('Laura Martinez', 'laura.martinez@email.com', '600777888', '44556677D', TRUE, 3),
-('Pedro Sanchez', 'pedro.sanchez@email.com', '600999000', '99887766E', FALSE, 0);
+INSERT INTO usuarios (id, nombre, email, telefono, dni, vendedor, valoracionMedia) VALUES
+(1, 'Juan Perez', 'juan.perez@email.com', '600111222', '12345678A', TRUE, 4),
+(2, 'Ana Lopez', 'ana.lopez@email.com', '600333444', '87654321B', FALSE, 0),
+(3, 'Carlos Garcia', 'carlos.garcia@email.com', '600555666', '11223344C', TRUE, 5),
+(4, 'Laura Martinez', 'laura.martinez@email.com', '600777888', '44556677D', TRUE, 3),
+(5, 'Pedro Sanchez', 'pedro.sanchez@email.com', '600999000', '99887766E', FALSE, 0),
+(6, 'Sofia Reyes', 'sofia.reyes@email.com', '600123456', '10101010F', TRUE, 4),
+(7, 'David Alonso', 'david.alonso@email.com', '600234567', '20202020G', FALSE, 0),
+(8, 'Elena Vazquez', 'elena.vazquez@email.com', '600345678', '30303030H', TRUE, 5),
+(9, 'Miguel Torres', 'miguel.torres@email.com', '600456789', '40404040I', FALSE, 0),
+(10, 'Isabel Romero', 'isabel.romero@email.com', '600567890', '50505050J', TRUE, 3);
 
--- Insertar datos en la tabla juegos
-INSERT INTO juegos (nombre, logo) VALUES
-('Magic: The Gathering', 'mtg_logo.png'),
-('Pokémon TCG', 'pokemon_logo.png'),
-('Yu-Gi-Oh!', 'yugioh_logo.png');
+INSERT INTO juegos (id, nombre, logo) VALUES
+(1, 'Magic: The Gathering', 'mtg_logo.png'),
+(2, 'Pokémon TCG', 'pokemon_logo.png'),
+(3, 'Yu-Gi-Oh!', 'yugioh_logo.png'),
+(4, 'Flesh and Blood', 'fab_logo.png'),
+(5, 'Digimon Card Game', 'digimon_logo.png'),
+(6, 'Lorcana', 'lorcana_logo.png');
 
--- Insertar datos en la tabla ediciones
-INSERT INTO ediciones (id_juego, nombre_edicion, fecha_lanzamiento, codigo_edicion) VALUES
-(1, 'Dominaria United', '2022-09-09', 'DMU'),
-(1, 'The Brothers'' War', '2022-11-18', 'BRO'),
-(2, 'Scarlet & Violet', '2023-03-31', 'SVI'),
-(2, 'Paldea Evolved', '2023-06-09', 'PAL'),
-(3, 'Power of the Elements', '2022-08-05', 'POTE'),
-(3, 'Darkwing Blast', '2022-10-21', 'DABL');
+INSERT INTO ediciones (id, id_juego, nombre_edicion, fecha_lanzamiento, codigo_edicion) VALUES
+(1, 1, 'Dominaria United', '2022-09-09', 'DMU'),
+(2, 1, 'The Brothers'' War', '2022-11-18', 'BRO'),
+(3, 2, 'Scarlet & Violet', '2023-03-31', 'SVI'),
+(4, 2, 'Paldea Evolved', '2023-06-09', 'PAL'),
+(5, 3, 'Power of the Elements', '2022-08-05', 'POTE'),
+(6, 3, 'Darkwing Blast', '2022-10-21', 'DABL'),
+(7, 1, 'March of the Machine', '2023-04-21', 'MOM'),
+(8, 4, 'Welcome to Rathe', '2020-10-11', 'WTR'),
+(9, 4, 'Tales of Aria', '2021-09-24', 'ELE'),
+(10, 5, 'BT-01: New Evolution', '2021-02-12', 'BT01'),
+(11, 6, 'The First Chapter', '2023-08-18', 'TFC'),
+(12, 2, 'Obsidian Flames', '2023-08-11', 'OBF');
 
--- Insertar datos en la tabla cartas
-INSERT INTO cartas (nombre, imagen, precio_medio) VALUES
-('Sheoldred, the Apocalypse', 'sheoldred_apocalypse.png', 75.50),
-('Ledger Shredder', 'ledger_shredder.png', 15.25),
-('Pikachu VMAX', 'pikachu_vmax.png', 25.00),
-('Charizard ex', 'charizard_ex_svi.png', 40.75),
-('Spright Blue', 'spright_blue.png', 5.50),
-('Tearlaments Kitkallos', 'tearlaments_kitkallos.png', 8.90),
-('Sol Ring', 'sol_ring_cmd.png', 1.50),
-('Arcane Signet', 'arcane_signet_cmd.png', 0.75),
-('Mew VMAX', 'mew_vmax_fs.png', 30.00),
-('Blue-Eyes White Dragon', 'blue_eyes_lob.png', 20.00),
-('Fable of the Mirror-Breaker', 'fable_mirror_breaker.png', 20.00),
-('Ragavan, Nimble Pilferer', 'ragavan_nimble_pilferer.png', 45.00),
-('Boseiju, Who Endures', 'boseiju_who_endures.png', 30.00);
+INSERT INTO cartas (id, nombre, imagen, precio_medio) VALUES
+(1, 'Sheoldred, the Apocalypse', 'sheoldred_apocalypse.png', 75.50),
+(2, 'Ledger Shredder', 'ledger_shredder.png', 15.25),
+(3, 'Pikachu VMAX', 'pikachu_vmax.png', 25.00),
+(4, 'Charizard ex (SVI)', 'charizard_ex_svi.png', 40.75),
+(5, 'Spright Blue', 'spright_blue.png', 5.50),
+(6, 'Tearlaments Kitkallos', 'tearlaments_kitkallos.png', 8.90),
+(7, 'Sol Ring', 'sol_ring_cmd.png', 1.50),
+(8, 'Arcane Signet', 'arcane_signet_cmd.png', 0.75),
+(9, 'Mew VMAX (Fusion Strike)', 'mew_vmax_fs.png', 30.00),
+(10, 'Blue-Eyes White Dragon (LOB)', 'blue_eyes_lob.png', 20.00),
+(11, 'Fable of the Mirror-Breaker', 'fable_mirror_breaker.png', 20.00),
+(12, 'Ragavan, Nimble Pilferer', 'ragavan_nimble_pilferer.png', 45.00),
+(13, 'Boseiju, Who Endures', 'boseiju_who_endures.png', 30.00),
+(14, 'Wrenn and Six', 'wrenn_and_six.png', 28.00),
+(15, 'Bravo, Star of the Show', 'bravo_star_fab.png', 50.00),
+(16, 'Oldhim, Grandfather of Eternity', 'oldhim_fab.png', 5.00),
+(17, 'Omnimon (BT1)', 'omnimon_bt1.png', 35.00),
+(18, 'Beelzemon (BT2)', 'beelzemon_bt2.png', 12.00),
+(19, 'Elsa - Spirit of Winter', 'elsa_lorcana.png', 60.00),
+(20, 'Maleficent - Monstrous Dragon', 'maleficent_lorcana.png', 45.00),
+(21, 'Charizard ex (OBF)', 'charizard_ex_obf.png', 100.00);
 
--- Insertar datos en la NUEVA tabla rarezas
-INSERT INTO rarezas (nombre_rareza, descripcion) VALUES
-('Mythic Rare', 'Una de las rarezas más altas en Magic: The Gathering.'),
-('Rare', 'Rareza alta, comúnmente encontrada en Magic: The Gathering y otros TCGs.'),
-('VMAX', 'Tipo especial de carta Ultra Rara en Pokémon TCG.'),
-('Double Rare', 'Una rareza en Pokémon TCG, usualmente indicada con dos estrellas negras.'),
-('Super Rare', 'Rareza común en Yu-Gi-Oh! con arte foil.'),
-('Ultra Rare', 'Rareza alta en varios TCGs, a menudo con arte y nombre foil.'),
-('Uncommon', 'Rareza común, más frecuente que Rara pero menos que Común.'),
-('Common', 'La rareza más básica y frecuente en la mayoría de TCGs.');
-
--- Insertar datos en la tabla cartas_ediciones
+INSERT INTO rarezas (id, nombre_rareza, descripcion) VALUES
+(1, 'Mythic Rare', 'Una de las rarezas más altas en Magic: The Gathering.'),
+(2, 'Rare', 'Rareza alta, comúnmente encontrada en Magic: The Gathering y otros TCGs.'),
+(3, 'VMAX', 'Tipo especial de carta Ultra Rara en Pokémon TCG.'),
+(4, 'Double Rare', 'Una rareza en Pokémon TCG, usualmente indicada con dos estrellas negras.'),
+(5, 'Super Rare', 'Rareza común en Yu-Gi-Oh! con arte foil y también usada en otros juegos.'),
+(6, 'Ultra Rare', 'Rareza alta en varios TCGs, a menudo con arte y nombre foil.'),
+(7, 'Uncommon', 'Rareza común, más frecuente que Rara pero menos que Común.'),
+(8, 'Common', 'La rareza más básica y frecuente en la mayoría de TCGs.'),
+(9, 'Legendary', 'Rareza muy alta, usada en juegos como Lorcana y Flesh and Blood.'),
+(10, 'Majestic', 'Rareza alta en Flesh and Blood.'),
+(11, 'Secret Rare', 'Una categoría de rareza muy alta, a menudo con numeración especial o arte alternativo.'),
+(12, 'Hyper Rare', 'Una de las rarezas más altas en Pokémon TCG, también conocidas como Gold Secret Rares.');
 
 INSERT INTO cartas_ediciones (id_carta, id_edicion, id_rareza) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(3, 3, 3),
+(3, 4, 3),
 (4, 3, 4),
 (5, 5, 5),
 (6, 5, 6),
 (7, 1, 7),
 (8, 2, 8),
-(9, 4, 3), 
+(9, 4, 3),
 (10, 5, 6),
 (11, 1, 2),
 (12, 2, 1),
-(13, 1, 2);
+(13, 1, 2),
+(14, 7, 1),
+(15, 8, 9),
+(16, 9, 10),
+(17, 10, 11),
+(18, 10, 5),
+(19, 11, 9),
+(20, 11, 5),
+(21, 12, 12);
 
+INSERT INTO estados_cartas (id, nombre_estado, descripcion) VALUES
+(1, 'Mint', 'Perfecto estado, como recién salida del sobre.'),
+(2, 'Near Mint', 'Mínimas imperfecciones, casi nueva.'),
+(3, 'Lightly Played', 'Ligero desgaste, pequeños arañazos o bordes algo blancos.'),
+(4, 'Moderately Played', 'Desgaste notable, algunas dobleces o blanqueamiento.'),
+(5, 'Heavily Played', 'Desgaste significativo, dobleces, pequeños rotos.'),
+(6, 'Damaged', 'Daño importante, roturas, dobleces grandes, daño por agua.');
 
--- Insertar datos en la tabla estados_cartas
-INSERT INTO estados_cartas (nombre_estado, descripcion) VALUES
-('Mint', 'Perfecto estado, como recién salida del sobre.'),
-('Near Mint', 'Mínimas imperfecciones, casi nueva.'),
-('Lightly Played', 'Ligero desgaste, pequeños arañazos o bordes algo blancos.'),
-('Moderately Played', 'Desgaste notable, algunas dobleces o blanqueamiento.'),
-('Heavily Played', 'Desgaste significativo, dobleces, pequeños rotos.'),
-('Damaged', 'Daño importante, roturas, dobleces grandes, daño por agua.');
+INSERT INTO estado_inventarios (id, nombre_estado, descripcion) VALUES
+(1, 'Disponible', 'El artículo está disponible para la venta.'),
+(2, 'Reservado', 'El artículo está reservado para un comprador.'),
+(3, 'Vendido', 'El artículo ha sido vendido.'),
+(4, 'Intercambiado', 'El artículo ha sido intercambiado.'),
+(5, 'Retirado', 'El vendedor ha retirado el artículo de la venta.');
 
--- Insertar datos en la tabla estado_inventarios
-INSERT INTO estado_inventarios (nombre_estado, descripcion) VALUES
-('Disponible', 'El artículo está disponible para la venta.'),
-('Reservado', 'El artículo está reservado para un comprador.'),
-('Vendido', 'El artículo ha sido vendido.'),
-('Intercambiado', 'El artículo ha sido intercambiado.'),
-('Retirado', 'El vendedor ha retirado el artículo de la venta.');
+INSERT INTO inventarios (id, id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, comentario, precio, imagen) VALUES
+(1, 1, 1, 1, 1, FALSE, 'Sheoldred en perfecto estado, ideal para Commander.', 80.00, 'sheoldred_juan_1.png'),
+(2, 1, 7, 2, 1, FALSE, 'Sol Ring Near Mint, staple de Commander.', 1.25, 'solring_juan_1.png'),
+(3, 3, 4, 1, 1, TRUE, 'Charizard ex (SVI) foil, directo del sobre a la funda.', 55.00, 'charizard_carlos_1.png'),
+(4, 3, 10, 3, 1, FALSE, 'Blue-Eyes White Dragon (LOB) Lightly Played.', 18.50, 'blueeyes_carlos_1.png'),
+(5, 4, 5, 2, 1, FALSE, 'Spright Blue NM, clave para mazos Spright.', 6.00, 'spright_laura_1.png'),
+(6, 1, 11, 2, 1, FALSE, 'Fable of the Mirror-Breaker, Near Mint.', 22.00, 'fable_juan_1.png'),
+(7, 3, 12, 1, 1, TRUE, 'Ragavan, Nimble Pilferer, Mint, foil!', 50.00, 'ragavan_carlos_1.png'),
+(8, 6, 15, 1, 1, FALSE, 'Bravo, Star of the Show WTR, Mint.', 52.00, 'bravo_sofia_1.png'),
+(9, 8, 17, 2, 1, TRUE, 'Omnimon BT1 Foil Near Mint', 38.00, 'omnimon_elena_1.png'),
+(10, 10, 19, 1, 1, FALSE, 'Elsa Lorcana First Chapter Mint', 65.00, 'elsa_isabel_1.png'),
+(11, 4, 21, 1, 1, TRUE, 'Charizard ex (OBF) - Pack Fresh Foil', 110.00, 'charizard_obf_laura_1.png');
 
--- Insertar datos en la tabla inventarios
-INSERT INTO inventarios (id_usuario, id_carta, id_estado_carta, id_estado_en_inventario, foil, comentario, precio, imagen) VALUES
-(1, 1, 1, 1, FALSE, 'Sheoldred en perfecto estado, ideal para Commander.', 80.00, 'sheoldred_juan_1.png'),
-(1, 7, 2, 1, FALSE, 'Sol Ring Near Mint, staple de Commander.', 1.25, 'solring_juan_1.png'),
-(3, 4, 1, 1, TRUE, 'Charizard ex foil, directo del sobre a la funda.', 55.00, 'charizard_carlos_1.png'),
-(3, 10, 3, 1, FALSE, 'Blue-Eyes White Dragon LOB, Lightly Played.', 18.50, 'blueeyes_carlos_1.png'),
-(4, 5, 2, 1, FALSE, 'Spright Blue NM, clave para mazos Spright.', 6.00, 'spright_laura_1.png'),
-(1, 11, 2, 1, FALSE, 'Fable of the Mirror-Breaker, Near Mint.', 22.00, 'fable_juan_1.png'),
-(3, 12, 1, 1, TRUE, 'Ragavan, Nimble Pilferer, Mint, foil!', 50.00, 'ragavan_carlos_1.png');
+INSERT INTO direcciones (id, id_usuario, pais, ciudad, calle, piso) VALUES
+(1, 1, 'España', 'Madrid', 'Calle Falsa 123', '3A'),
+(2, 2, 'España', 'Barcelona', 'Avenida Diagonal 456', '2B'),
+(3, 3, 'España', 'Valencia', 'Plaza del Ayuntamiento 7', '1C'),
+(4, 4, 'España', 'Sevilla', 'Calle Sierpes 89', 'Bajo'),
+(5, 5, 'España', 'Zaragoza', 'Paseo Independencia 10', '5D'),
+(6, 6, 'España', 'Málaga', 'Calle Larios 5', '2A'),
+(7, 7, 'España', 'Murcia', 'Avenida Libertad 15', '4C'),
+(8, 8, 'España', 'Palma de Mallorca', 'Paseo Marítimo 20', 'Principal'),
+(9, 9, 'España', 'Bilbao', 'Gran Vía 30', 'Entresuelo'),
+(10, 10, 'España', 'Alicante', 'Explanada de España 1', 'Ático');
 
--- Insertar datos en la tabla direcciones
-INSERT INTO direcciones (id_usuario, pais, ciudad, calle, piso, codigo_postal) VALUES
-(1, 'España', 'Madrid', 'Calle Falsa 123', '3A', '28001'),
-(2, 'España', 'Barcelona', 'Avenida Diagonal 456', '2B', '08001'),
-(3, 'España', 'Valencia', 'Plaza del Ayuntamiento 7', '1C', '46001'),
-(4, 'España', 'Sevilla', 'Calle Sierpes 89', 'Bajo', '41001'),
-(5, 'España', 'Zaragoza', 'Paseo Independencia 10', '5D', '50001');
+INSERT INTO mensajes (id_usuario_enviador, id_usuario_receptor, contenido, fecha) VALUES
+(2, 1, 'Hola Juan, ¿está disponible la Sheoldred?', '2023-10-01 10:00:00'),
+(1, 2, 'Hola Ana, sí, sigue disponible.', '2023-10-01 10:05:00'),
+(4, 3, 'Buenas Carlos, ¿aceptarías cambios por el Charizard?', '2023-10-02 15:30:00'),
+(3, 4, 'Hola Laura, de momento solo venta, gracias.', '2023-10-02 15:35:00'),
+(5, 1, 'Me interesa el Sol Ring, ¿último precio?', '2023-10-03 11:00:00'),
+(1, 5, 'El precio es el marcado, está muy ajustado.', '2023-10-03 11:15:00'),
+(6, 8, 'Hola Elena, ¿el Omnimon es versión japonesa o inglesa?', '2023-10-04 09:00:00'),
+(8, 6, 'Es la versión inglesa, Near Mint.', '2023-10-04 09:05:00'),
+(7, 10, '¿Tienes más cartas de Lorcana aparte de Elsa?', '2023-10-05 18:00:00'),
+(10, 7, 'De momento solo Elsa, pero pronto listaré más.', '2023-10-05 18:20:00');
 
--- Insertar datos en la tabla mensajes
-INSERT INTO mensajes (id_usuario_enviador, id_usuario_receptor, contenido, fecha, leido) VALUES
-(2, 1, 'Hola Juan, ¿está disponible la Sheoldred?', '2023-10-01 10:00:00', TRUE),
-(1, 2, 'Hola Ana, sí, sigue disponible.', '2023-10-01 10:05:00', TRUE),
-(4, 3, 'Buenas Carlos, ¿aceptarías cambios por el Charizard?', '2023-10-02 15:30:00', FALSE),
-(3, 4, 'Hola Laura, de momento solo venta, gracias.', '2023-10-02 15:35:00', FALSE);
+INSERT INTO tipos_envios (id, nombre, descripcion, precio) VALUES
+(1, 'Ordinario', 'Envío estándar sin seguimiento.', 2.50),
+(2, 'Certificado', 'Envío con número de seguimiento.', 5.50),
+(3, 'Urgente', 'Envío rápido con seguimiento.', 8.00),
+(4, 'Punto de Recogida', 'Envío a un punto de recogida cercano.', 4.00);
 
--- Insertar datos en la tabla tipos_envios
-INSERT INTO tipos_envios (nombre, descripcion, precio) VALUES
-('Ordinario', 'Envío estándar sin seguimiento.', 2.50),
-('Certificado', 'Envío con número de seguimiento.', 5.50),
-('Urgente', 'Envío rápido con seguimiento.', 8.00),
-('Punto de Recogida', 'Envío a un punto de recogida cercano.', 4.00);
+INSERT INTO estado_envios (id, estado, descripcion) VALUES
+(1, 'Pendiente de Pago', 'Esperando la confirmación del pago.'),
+(2, 'En Preparación', 'El vendedor está preparando el pedido.'),
+(3, 'Enviado', 'El pedido ha sido enviado.'),
+(4, 'En Tránsito', 'El pedido está de camino.'),
+(5, 'Entregado', 'El pedido ha sido entregado al comprador.'),
+(6, 'Cancelado', 'El pedido ha sido cancelado.'),
+(7, 'Devuelto', 'El pedido ha sido devuelto al vendedor.');
 
--- Insertar datos en la tabla estado_envios
-INSERT INTO estado_envios (estado, descripcion) VALUES
-('Pendiente de Pago', 'Esperando la confirmación del pago.'),
-('En Preparación', 'El vendedor está preparando el pedido.'),
-('Enviado', 'El pedido ha sido enviado.'),
-('En Tránsito', 'El pedido está de camino.'),
-('Entregado', 'El pedido ha sido entregado al comprador.'),
-('Cancelado', 'El pedido ha sido cancelado.'),
-('Devuelto', 'El pedido ha sido devuelto al vendedor.');
+INSERT INTO pedidos (id, id_usuario, id_tipo_envio, id_estado_envio, comentario, valoracion) VALUES
+(1, 2, 2, 5, 'Todo perfecto, carta bien protegida.', 5),
+(2, 5, 1, 3, 'Esperando el envío.', NULL),
+(3, 1, 3, 2, NULL, NULL),
+(4, 7, 2, 1, 'Compra de Omnimon para colección.', NULL),
+(5, 9, 4, 1, 'Pedido de Elsa Lorcana.', NULL),
+(6, 2, 1, 5, 'Fable recibido, todo OK.', 4),
+(7, 5, 2, 3, 'Bravo Star of the Show en camino.', NULL),
+(8, 1, 3, 2, 'Comprando Charizard OBF.', NULL),
+(9, 7, 1, 4, 'Esperando Ragavan.', NULL),
+(10, 9, 2, 5, 'Blue-Eyes recibido, gracias!', 5);
 
--- Insertar datos en la tabla pedidos
+UPDATE inventarios SET id_estado_en_inventario = 3 WHERE id IN (1, 3, 5, 9, 10, 6, 8, 11, 7, 4);
 
-INSERT INTO pedidos (id_usuario, id_direccion_envio, id_tipo_envio, id_estado_envio, comentario, valoracion) VALUES
-(2, 2, 2, 5, 'Todo perfecto, carta bien protegida.', 5 ), 
-(5, 5, 1, 3, 'Esperando el envío.', NULL),                                                                  
-(1, 1, 3, 2, NULL, NULL);                                                                                    
-
--- Insertar datos en la tabla pedidos_inventarios
-
-UPDATE inventarios SET id_estado_en_inventario = 3 WHERE id IN (1, 3, 5); 
-
-INSERT INTO pedidos_inventarios (id_pedido, id_inventario,fecha) VALUES
-(1, 1, curdate()),
-(2, 3,curdate()),
-(3, 5, curdate()); 
+INSERT INTO pedidos_inventarios (id_pedido, id_inventario, fecha) VALUES
+(1, 1, '2023-10-05 12:00:00'),
+(2, 3, '2023-10-06 09:30:00'),
+(3, 5, '2023-10-07 16:45:00'),
+(4, 9, '2023-10-08 10:00:00'),
+(5, 10, '2023-10-09 11:00:00'),
+(6, 6, '2023-10-10 12:00:00'),
+(7, 8, '2023-10-11 13:00:00'),
+(8, 11, '2023-10-12 14:00:00'),
+(9, 7, '2023-10-13 15:00:00'),
+(10, 4, '2023-10-14 16:00:00');
 
 
 DELIMITER //
@@ -585,7 +630,7 @@ WHERE esi.nombre_estado = 'Disponible'
 ORDER BY porcentaje_diferencia DESC;
 
 
-SELECT valorInventarioDisponible(3);
+
 
 
 
