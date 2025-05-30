@@ -1,4 +1,4 @@
-# Proyecto Base de dotos
+# Proyecto Base de datos
 
 
 Tienda online de compra y venta de cartas entre usuarios
@@ -10,7 +10,6 @@ Cliente :
         •	Sistema de valoración y reputación de usuarios
         •	Verificación de autenticidad de cartas premium
         •	Comisión del 5% por transacción exitosa
-        •	Garantía de reembolso en caso de problemas
         •	Envíos asegurados a través de empresas asociadas
         •	Catálogo actualizado con precios de mercado en tiempo real
         
@@ -18,24 +17,24 @@ Operamos principalmente en línea, con un equipo dedicado a la atención al clie
 
 
 ## PROCESO DE VENTA:
-1.	### El vendedor:
+### El vendedor:
 •	Crea un listado de la carta
 •	Sube fotos de la carta
 •	Establece precio y estado
 •	Define condiciones de envío
-2.	Cuando se realiza una venta:
+### Cuando se realiza una venta:
 •	Recibe notificación de venta
 •	Tiene 48h para confirmar y enviar
 •	Sube tracking number
 •	Recibe el pago (menos la comisión) cuando el comprador confirma recepción
 ## PROCESO DE COMPRA:
-1.	### El comprador:
+### El comprador:
 •	Busca la carta deseada
 •	Revisa fotos y descripción
 •	Verifica reputación del vendedor
 •	Selecciona método de envío
 •	Realiza el pago
-2.	Sistema de garantía:
+###	Sistema de garantía:
 •	El dinero queda retenido
 •	Se libera al confirmar recepción
 •	72h para reclamaciones
@@ -44,5 +43,11 @@ Operamos principalmente en línea, con un equipo dedicado a la atención al clie
 •	Sistema de valoraciones
 •	Chat interno entre usuarios
 •	Historial de transacciones
+•	Alertas de precio
+•	Disputa y resolución de conflictos 
+
+## CARACTERÍSTICAS ADICIONALES:
+•	Sistema de valoraciones
+•	Chat interno entre usuarios
 •	Alertas de precio
 •	Disputa y resolución de conflictos 
